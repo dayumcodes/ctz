@@ -1,18 +1,18 @@
-
-"use client";
-
-import { useParams } from "next/navigation";
 import Link from "next/link";
-import { mockBlogData } from "@/app/page"; // Assuming mockBlogData is exported from page.tsx
+import { mockBlogData } from "../mockBlogData";
 import type { BlogPost } from "@/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowLeft, CalendarDays, Tag } from "lucide-react";
 
-export default function BlogPostPage() {
-  const params = useParams();
-  const postId = params.id as string;
+export async function generateStaticParams() {
+  // Use the mockBlogData array to generate all possible blog post IDs
+  return mockBlogData.map(post => ({ id: post.id }));
+}
+
+export default function BlogPostPage({ params }: { params: { id: string } }) {
+  const postId = params.id;
 
   // In a real app, you'd fetch this data from a CMS or database
   const post: BlogPost | undefined = mockBlogData.find(p => p.id === postId);
